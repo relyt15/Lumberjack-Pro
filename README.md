@@ -10,7 +10,7 @@ Team name: **Timbermen**
 
 Team members: **Tyler Conway**, **Neo Hang**, **Alex Matovski**
 
-- We will be building a task and projet manager. We want to build it because we want to have better organization of everyday chores and homework as students.
+- We will be building a task and project manager. We want to build it because we want to have better organization of everyday chores and homework as students.
 It will be useful by managing work, class assignments, chores, hobbies, and other projects. This will be done by having a single place to look at all of the progress on any project someone is working on in any scenario.
 
 The design and concept of the program will be collabrative.
