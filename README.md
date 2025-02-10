@@ -1,7 +1,13 @@
 # Lumberjack-Pro
-Task and/or Project manager
-Project Name: Lumberjack Pro
-Team name: Timbermen
+
+### *How Would You Want To Trim The Day?*
+
+Task and/or Project manager: *TBD*
+
+Project Name: **Lumberjack Pro**
+
+Team name: **Timbermen**
+
 Team members: **Tyler Conway**, **Neo Hang**, **Alex Matovski**
 
 - We will be building a task and projet manager. We want to build it because we want to have better organization of everyday chores and homework as students.
