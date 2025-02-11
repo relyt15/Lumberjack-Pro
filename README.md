@@ -18,4 +18,4 @@ The design and concept of the program will be collabrative.
 - Alex - Front-end and back-end, class and method development
 - Tyler - Backend, front-end, class and method development
 
-![UML for Lumberjack Pro](https://github.com/user-attachments/assets/86d6295f-f8fb-4c91-a80c-fee6ec47b85b)
+![UML for Lumberjack Pro](https://github.com/user-attachments/assets/63dda13e-afd8-41f6-8da4-e50392b686f1)
