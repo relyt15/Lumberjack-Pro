@@ -1,0 +1,76 @@
+/**
+ *
+ * @author user
+ */
+
+import java.util.Scanner;
+
+public class Task {
+    
+    //------------------------------------------------------------------------
+    // Setting up variables and a scanner
+    //------------------------------------------------------------------------
+    private String taskName;
+    private String taskDescription;
+    private String taskStatus;
+    private String taskDueDate;
+    private boolean taskCompleted;
+    Scanner scan = new Scanner(System.in);
+    
+    
+    public Task(String name, String description, String dueDate)
+    {
+        taskName = ("");
+        taskDescription = ("");
+        taskStatus = ("");
+        taskDueDate = ("");
+        taskCompleted = false;
+        
+    } // end of Task Constructor
+    
+   public String setTaskName()
+   {
+       taskName = scan.nextLine();
+       return taskName;
+   } // end setName
+   
+   public String setTaskDescription()
+   {
+       taskDescription = scan.nextLine();
+       return taskDescription;
+   } // end setTaskDescription
+   
+   public String setTaskStatus()
+   {
+       taskStatus = scan.nextLine();
+       return taskStatus;
+   } // end setTask Status
+   
+   public String getTaskName()
+   {
+       return taskName;   
+   } // end getTaskName
+   
+   public String getTaskDescription()
+   {
+       return taskDescription;
+   } // end getTaskDescription
+   
+   public String getTaskDueDate()
+   {
+       return taskDueDate;
+   } // end getTaskDueDate
+   
+   public boolean isTaskCompleted()
+   {
+       return taskCompleted;
+   } // end isCompleted
+   
+   public void setTaskCompleted()
+   {
+       taskCompleted = true;
+   } // end setTask Completed
+   
+   
+    
+} //end of Task Class
