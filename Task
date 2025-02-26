@@ -17,55 +17,56 @@ public class Task {
         this.taskDueDate = dueDate;
         this.taskStatus = "Pending"; // Default status
         this.taskCompleted = false;  // Default not completed
-    } // end of task constructor
+    }
     
     
-    //------------------------------------------------------------------------
-    // Setting up methods to get and modify all data
-    //------------------------------------------------------------------------
+    
+    // Setting up methods to set all data
    public String setTaskName()
    {
        this.taskName = taskName;
        return taskName;
-   } // end setName
+   }
    
    public String setTaskDescription()
    {
        this.taskDescription = taskDescription;
        return taskDescription;
-   } // end setTaskDescription
+   }
    
    public void setTaskStatus()
    {
        this.taskStatus = taskStatus;
-   } // end setTask Status
+   }
    
+      public void setTaskCompleted()
+   {
+        this.taskCompleted = true;
+        this.taskStatus = "Completed";
+   }
+   
+      
+    // Setting up methods to get all data
+
    public String getTaskName()
    {
        return taskName;   
-   } // end getTaskName
+   }
    
    public String getTaskDescription()
    {
        return taskDescription;
-   } // end getTaskDescription
+   }
    
    public String getTaskDueDate()
    {
        return taskDueDate;
-   } // end getTaskDueDate
+   }
    
    public boolean isTaskCompleted()
    {
        return taskCompleted;
-   } // end isCompleted
-   
-   public void setTaskCompleted()
-   {
-        this.taskCompleted = true;
-        this.taskStatus = "Completed";
-   } // end setTask Completed
-   
+   }
    
     
 } //end of Task Class
