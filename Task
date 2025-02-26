@@ -1,49 +1,43 @@
-/**
- *
- * @author user
- */
-
 import java.util.Scanner;
 
 public class Task {
     
-    //------------------------------------------------------------------------
-    // Setting up variables and a scanner
-    //------------------------------------------------------------------------
+    // Task attributes
     private String taskName;
     private String taskDescription;
     private String taskStatus;
     private String taskDueDate;
     private boolean taskCompleted;
-    Scanner scan = new Scanner(System.in);
-    
-    
-    public Task(String name, String description, String dueDate)
+
+    // Constructor to initialize the Task object
+    public Task(String name, String description, String dueDate) 
     {
-        taskName = ("");
-        taskDescription = ("");
-        taskStatus = ("");
-        taskDueDate = ("");
-        taskCompleted = false;
-        
-    } // end of Task Constructor
+        this.taskName = name;
+        this.taskDescription = description;
+        this.taskDueDate = dueDate;
+        this.taskStatus = "Pending"; // Default status
+        this.taskCompleted = false;  // Default not completed
+    } // end of task constructor
     
+    
+    //------------------------------------------------------------------------
+    // Setting up methods to get and modify all data
+    //------------------------------------------------------------------------
    public String setTaskName()
    {
-       taskName = scan.nextLine();
+       this.taskName = taskName;
        return taskName;
    } // end setName
    
    public String setTaskDescription()
    {
-       taskDescription = scan.nextLine();
+       this.taskDescription = taskDescription;
        return taskDescription;
    } // end setTaskDescription
    
-   public String setTaskStatus()
+   public void setTaskStatus()
    {
-       taskStatus = scan.nextLine();
-       return taskStatus;
+       this.taskStatus = taskStatus;
    } // end setTask Status
    
    public String getTaskName()
@@ -68,7 +62,8 @@ public class Task {
    
    public void setTaskCompleted()
    {
-       taskCompleted = true;
+        this.taskCompleted = true;
+        this.taskStatus = "Completed";
    } // end setTask Completed
    
    
