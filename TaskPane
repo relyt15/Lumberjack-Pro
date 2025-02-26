@@ -1,15 +1,8 @@
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
 import javafx.geometry.Insets;
-import javafx.scene.control.ToggleGroup;
-import javafx.event.ActionEvent;
-import javafx.geometry.HPos;
 import javafx.geometry.Pos;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
-import javafx.scene.text.Font;
 
 public class TaskPane extends HBox {
     private Task task;
@@ -32,13 +25,21 @@ public class TaskPane extends HBox {
         completedCheckBox.setSelected(task.isTaskCompleted());
 
         // Update Task when checkbox is clicked
-        // completedCheckBox.setOnAction(e -> task.setTaskCompleted(completedCheckBox.isSelected()));
+        completedCheckBox.setOnAction(e -> {
+            if (completedCheckBox.isSelected()) {
+                task.setTaskCompleted(); // Mark task as completed
+            } else {
+                task.setTaskStatus(); // Set status back to pending
+            }
+        });
 
         // Styling and Spacing
-        this.setSpacing(10);
-        this.setPadding(new Insets(5));
-        
+        this.setSpacing(15);
+        this.setPadding(new Insets(10));
+        this.setAlignment(Pos.CENTER_LEFT);
+
         // Add elements to the pane
         this.getChildren().addAll(nameLabel, dueDateLabel, completedCheckBox);
     }
 }
+
