@@ -1,0 +1,41 @@
+import java.util.ArrayList;
+
+/**
+ *
+ * @author user
+ */
+public class ProjectService {
+    ArrayList<Project> projectList = new ArrayList<Project>() ;
+    
+    //methods to add and remove projects from projectList
+    public void addProject(Project project) {
+        projectList.add(project);
+    }
+    
+    
+    public boolean removeProject(Project project) {
+        boolean removed = false;
+        for(int i = 0; i < projectList.size(); i++) {
+            if(projectList.contains(i) == true){
+                projectList.remove(i);
+                removed = true;
+                break;
+            }
+            else{
+                System.out.println("Project: " + project + " was not found or removed.");
+            }
+        } 
+        return removed;
+    } // end removeProject
+            
+            
+            
+        public void displayAllProjects() {
+        System.out.println("All Food Items: ");
+        for (int i = 0; i < projectList.size(); i++) {
+            System.out.println(projectList.get(i));
+        }        
+        
+    }
+    
+} // end ProjectService
