@@ -1,0 +1,41 @@
+import java.util.ArrayList;
+
+/**
+ *
+ * @author user
+ */
+public class TaskService {
+    ArrayList<Task> taskList = new ArrayList<Task>() ;
+    
+    //methods to add and remove tasks from taskList
+    public void addTask(Task task) {
+        taskList.add(task);
+    }
+
+    
+    public boolean removeTask(Task task) {
+        boolean removed = false;
+        for(int i = 0; i < taskList.size(); i++) {
+            if(taskList.contains(i) == true){
+                taskList.remove(i);
+                removed = true;
+                break;
+            }
+            else{
+                System.out.println("Task: " + task + " was not found or removed.");
+            }
+        } 
+        return removed;
+    } // end removeTask
+            
+            
+            
+        public void displayAllTasks() {
+        System.out.println("All Food Items: ");
+        for (int i = 0; i < taskList.size(); i++) {
+            System.out.println(taskList.get(i));
+        }        
+        
+    }
+    
+} // end TaskService
