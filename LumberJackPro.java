@@ -10,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -34,7 +35,7 @@ public class LumberJackPro extends Application {
      
         
         Font font = new Font(13); 
-        Label greeting = new Label("Welcome Lumberman, What Are Yer Plans for Today?");
+        Label greeting = new Label("LUMBERJACK PRO");
         greeting.setFont(new Font("Liberation Mono", 24));
         GridPane.setHalignment (greeting, HPos.LEFT);
        
@@ -45,7 +46,14 @@ public class LumberJackPro extends Application {
         addTaskButton.setOnAction(e -> addNewTask());  // Handle addTask button click
         addProjectButton.setOnAction (e -> addNewProject()); // handles addProject button click
         
-        VBox greetLayout = new VBox(15, greeting);
+        Image tree2 = new Image(getClass().getResourceAsStream("/Illustration19.png"));
+        ImageView treeImageView = new ImageView(tree2);
+        
+        treeImageView.setFitWidth(200);  // Adjust width of the image
+        treeImageView.setFitHeight(200); // Adjust height of the image
+        treeImageView.setPreserveRatio(true);
+        
+        VBox greetLayout = new VBox(15, greeting, treeImageView);
         greetLayout.setAlignment(Pos.CENTER);
         greetLayout.setStyle("-fx-padding: 5 px;");
         
@@ -76,7 +84,7 @@ public class LumberJackPro extends Application {
         primaryStage.getIcons().add(tree);
         
         primaryStage.setTitle("LumberJack Pro");
-        primaryStage.setResizable(false);
+        primaryStage.setResizable(true);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
