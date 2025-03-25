@@ -34,7 +34,7 @@ public class LumberJackPro extends Application {
      
         
         Font font = new Font(13); 
-        Label greeting = new Label("What Are Your Plans for Today?");
+        Label greeting = new Label("Welcome Lumberman, What Are Yer Plans for Today?");
         greeting.setFont(new Font("Liberation Mono", 24));
         GridPane.setHalignment (greeting, HPos.LEFT);
        
@@ -52,15 +52,18 @@ public class LumberJackPro extends Application {
         VBox taskLayout = new VBox(20, addTaskButton, taskContainer);  // Overall layout
         HBox projectLayout = new HBox(30, addProjectButton, projectContainer);
         
-        ScrollPane scroll = new ScrollPane();
+        ScrollPane scroll = new ScrollPane(); //Scrollbar made for Task Sections
         scroll.setContent(taskLayout);
         
-        ScrollPane scroll2 = new ScrollPane();
+        ScrollPane scroll2 = new ScrollPane(); //Scrollbar made for Project Section
         scroll2.setContent(projectLayout);
         
-        windowContainer.setBottom(scroll);
-        windowContainer.setCenter(scroll2);
+        windowContainer.setBottom(scroll); 
+        windowContainer.setCenter(scroll2); 
         greetContainer.setTop(greetLayout);
+        
+        windowContainer.setStyle("-fx-border-color: darkgreen; -fx-border-width: 5px; -fx-border-radius: 10px;");
+
         
         VBox wholeLayout = new VBox(20, greetContainer, windowContainer);
         wholeLayout.setAlignment(Pos.TOP_CENTER);
