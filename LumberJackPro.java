@@ -3,10 +3,12 @@ package com.mycompany.lumberjack_pro;
 //import java.util.Scanner;
 import javafx.application.Application;
 import javafx.geometry.HPos;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -18,6 +20,7 @@ import javafx.scene.text.Font;
 
 public class LumberJackPro extends Application {
     private BorderPane windowContainer;
+    private BorderPane greetContainer;
     private HBox taskContainer;
     private HBox projectContainer;
     
@@ -25,30 +28,46 @@ public class LumberJackPro extends Application {
     @Override
     public void start(Stage primaryStage) {
         windowContainer = new BorderPane();
+        greetContainer = new BorderPane();
         taskContainer = new HBox(10);  // Container to hold task panes
         projectContainer = new HBox(20); // Container to hold project panes   
      
         
         Font font = new Font(13); 
         Label greeting = new Label("What Are Your Plans for Today?");
-        greeting.setFont(font);
+        greeting.setFont(new Font("Liberation Mono", 24));
         GridPane.setHalignment (greeting, HPos.LEFT);
+       
         
-        Button addTaskButton = new Button("Add New Task");
+        Button addTaskButton = new Button("+");
         Button addProjectButton = new Button("Add New Project");
 
         addTaskButton.setOnAction(e -> addNewTask());  // Handle addTask button click
         addProjectButton.setOnAction (e -> addNewProject()); // handles addProject button click
         
+        VBox greetLayout = new VBox(15, greeting);
+        greetLayout.setAlignment(Pos.CENTER);
+        greetLayout.setStyle("-fx-padding: 5 px;");
+        
         VBox taskLayout = new VBox(20, addTaskButton, taskContainer);  // Overall layout
         HBox projectLayout = new HBox(30, addProjectButton, projectContainer);
         
-        windowContainer.setBottom(taskLayout);
-        windowContainer.setCenter(projectLayout);
+        ScrollPane scroll = new ScrollPane();
+        scroll.setContent(taskLayout);
+        
+        ScrollPane scroll2 = new ScrollPane();
+        scroll2.setContent(projectLayout);
+        
+        windowContainer.setBottom(scroll);
+        windowContainer.setCenter(scroll2);
+        greetContainer.setTop(greetLayout);
+        
+        VBox wholeLayout = new VBox(20, greetContainer, windowContainer);
+        wholeLayout.setAlignment(Pos.TOP_CENTER);
+        wholeLayout.setStyle("-fx-background-color: beige; -fx-padding: 20px;");
         
         
-        Group root = new Group(greeting, windowContainer); //taskLayout, projectLayout
-        Scene scene = new Scene(root, 1200, 600, Color.BEIGE);
+        Scene scene = new Scene(wholeLayout, 1200, 600, Color.BEIGE);
         
         Image tree = new Image(getClass().getResourceAsStream("/LUMBER.png"));
         primaryStage.getIcons().add(tree);
