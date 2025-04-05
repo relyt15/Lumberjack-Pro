@@ -73,9 +73,9 @@ public class ProjectService {
             dialog.setResultConverter(dialogButton -> {
                 if (dialogButton == okButton) {
                     Project newProject = new Project();
-                    newProject.setProjectName(nameField.getText());
-                    newProject.setProjectDueDate(dueDateField.getValue().toString());
-                    newProject.setProjectDescription(descriptionField.getText());
+                    newProject.setProjectName("Name: " + nameField.getText());
+                    newProject.setProjectDueDate("Due Date: " + dueDateField.getValue().toString());
+                    newProject.setProjectDescription("Description: " + descriptionField.getText());
                     return newProject;
                 }
                 return null;
@@ -95,7 +95,7 @@ public class ProjectService {
             ButtonType saveButton = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
             dialog.getDialogPane().getButtonTypes().addAll(saveButton, ButtonType.CANCEL);
 
-            TextField nameField = new TextField(existingProject.getProjectName());
+            TextField nameField = new TextField();
             DatePicker dueDateField = new DatePicker(LocalDate.now());
             TextField descriptionField = new TextField();
             
@@ -116,9 +116,9 @@ public class ProjectService {
             dialog.setResultConverter(button -> {
                 if (button == saveButton) {
                     Project updatedProject = new Project();
-                    updatedProject.setProjectName("Name: " + nameField.getText());
-                    updatedProject.setProjectDueDate("Due Date: " + dueDateField.getValue().toString());
-                    updatedProject.setProjectDescription("Description: " + descriptionField.getText());
+                    updatedProject.setProjectName(nameField.getText());
+                    updatedProject.setProjectDueDate(dueDateField.getValue().toString());
+                    updatedProject.setProjectDescription(descriptionField.getText());
                     return updatedProject;
                 }
                 return null;
