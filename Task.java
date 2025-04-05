@@ -70,6 +70,7 @@ public class Task {
        return taskCompleted;
    }
    
+   @Override
    public String toString() {
        String taskDetails = "Task name: " + this.getTaskName() + 
             "\nTask Description: " + this.getTaskDescription() + "\nTask due date: " 
