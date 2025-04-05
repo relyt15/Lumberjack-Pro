@@ -1,42 +1,90 @@
-import java.util.Scanner;
+package com.mycompany.lumberjack_pro;
+
+//import java.util.Scanner;
 import javafx.application.Application;
+import javafx.geometry.HPos;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
-public class LumberjackPro extends Application {
+public class LumberJackPro extends Application {
     private BorderPane windowContainer;
-    private VBox taskContainer;
+    private BorderPane greetContainer;
+    private HBox taskContainer;
     private HBox projectContainer;
     
     
     @Override
     public void start(Stage primaryStage) {
         windowContainer = new BorderPane();
-        taskContainer = new VBox(10);  // Container to hold task panes
-        projectContainer = new HBox(20); // Container to hold project panes
+        greetContainer = new BorderPane();
+        taskContainer = new HBox(10);  // Container to hold task panes
+        projectContainer = new HBox(20); // Container to hold project panes   
+     
         
-        Button addTaskButton = new Button("Add New Task");
+        Font font = new Font(13); 
+        Label greeting = new Label("LUMBERJACK PRO");
+        greeting.setFont(new Font("Liberation Mono", 24));
+        GridPane.setHalignment (greeting, HPos.LEFT);
+       
+        
+        Button addTaskButton = new Button("+");
         Button addProjectButton = new Button("Add New Project");
 
         addTaskButton.setOnAction(e -> addNewTask());  // Handle addTask button click
         addProjectButton.setOnAction (e -> addNewProject()); // handles addProject button click
+        
+        Image tree2 = new Image(getClass().getResourceAsStream("/Illustration19.png"));
+        ImageView treeImageView = new ImageView(tree2);
+        
+        treeImageView.setFitWidth(200);  // Adjust width of the image
+        treeImageView.setFitHeight(200); // Adjust height of the image
+        treeImageView.setPreserveRatio(true);
+        
+        VBox greetLayout = new VBox(15, greeting, treeImageView);
+        greetLayout.setAlignment(Pos.CENTER);
+        greetLayout.setStyle("-fx-padding: 5 px;");
+        
+        VBox taskLayout = new VBox(20, addTaskButton, taskContainer);  // Overall layout
+        HBox projectLayout = new HBox(30, addProjectButton, projectContainer);
+        
+        ScrollPane scroll = new ScrollPane(); //Scrollbar made for Task Sections
+        scroll.setContent(taskLayout);
+        
+        ScrollPane scroll2 = new ScrollPane(); //Scrollbar made for Project Section
+        scroll2.setContent(projectLayout);
+        
+        windowContainer.setBottom(scroll); 
+        windowContainer.setCenter(scroll2); 
+        greetContainer.setTop(greetLayout);
+        
+        windowContainer.setStyle("-fx-border-color: darkgreen; -fx-border-width: 5px; -fx-border-radius: 10px;");
 
         
-        VBox taskLayout = new VBox(10, addTaskButton, taskContainer);  // Overall layout
-        HBox projectLayout = new HBox(20, addProjectButton, projectContainer);
+        VBox wholeLayout = new VBox(20, greetContainer, windowContainer);
+        wholeLayout.setAlignment(Pos.TOP_CENTER);
+        wholeLayout.setStyle("-fx-background-color: beige; -fx-padding: 20px;");
         
-        windowContainer.setBottom(taskLayout);
-        windowContainer.setCenter(projectLayout);
         
-        Group root = new Group(windowContainer); //taskLayout, projectLayout
-        Scene scene = new Scene(root, 300, 400);
+        Scene scene = new Scene(wholeLayout, 1200, 600, Color.BEIGE);
         
-        primaryStage.setTitle("Task Manager");
+        Image tree = new Image(getClass().getResourceAsStream("/LUMBER.png"));
+        primaryStage.getIcons().add(tree);
+        
+        primaryStage.setTitle("LumberJack Pro");
+        primaryStage.setResizable(true);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -49,6 +97,7 @@ public class LumberjackPro extends Application {
         TaskPane taskPane = new TaskPane(newTask);
         taskContainer.getChildren().add(taskPane);
     }
+    
     private void addNewProject() {
         Project newProject = new Project();
         
