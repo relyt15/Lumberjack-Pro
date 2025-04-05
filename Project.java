@@ -21,8 +21,6 @@ public class Project {
         this.projectCompleted = false;  // Default not completed
     }
     
-    
-    
     // Setting up methods to set all data
    public String setProjectName(String projectName)
    {
@@ -74,6 +72,10 @@ public class Project {
        return projectCompleted;
    }
    
+   public ArrayList getTasks(){
+       return tasksInProject;
+   }
+   
    // methods to add and remove tasks from this project's tasksInProject list
    public void addTaskToProject(Task task) {
         tasksInProject.add(task);
@@ -93,7 +95,7 @@ public class Project {
         return removed;
    }
    
-   
+   @Override
    public String toString() {
        String ProjectDetails = "Project name: " + this.getProjectName() + 
             "\nProject Description: " + this.getProjectDescription() + "\nProject due date: " 
