@@ -1,5 +1,3 @@
-package com.mycompany.lumberjack_pro;
-
 import java.time.LocalDate;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
