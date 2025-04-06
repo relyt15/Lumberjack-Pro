@@ -4,11 +4,12 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
-public class ProjectPane extends HBox {
+public class ProjectPane extends VBox {
     private Project project;
     private TextField nameField;
     private TextField dueDateField;
@@ -20,6 +21,7 @@ public class ProjectPane extends HBox {
     private Button saveButton;
     private Button editButton;
     private VBox taskListContainer;
+    private Button addTaskButton;
 
     public ProjectPane(Project project) {
         this.project = project;
@@ -57,6 +59,32 @@ public class ProjectPane extends HBox {
         saveButton = new Button("Save");
         saveButton.setOnAction(e -> saveProjectDetails());
         
+        
+        //---------------------------------------------------------------------------
+        //Placing corresponding tasks within each project pane
+        //---------------------------------------------------------------------------
+        
+        taskListContainer = new VBox(5);
+        refreshTaskList();
+        
+        addTaskButton = new Button("Add Task");
+        addTaskButton.setOnAction(e -> {
+            TaskService taskService = new TaskService();
+            Optional<Task> result = taskService.newTaskDialog();
+            result.ifPresent(newTask -> {
+                project.addTaskToProject(newTask);
+                refreshTaskList(); // Make sure this updates your task UI
+            });
+        });
+        
+        VBox taskSection = new VBox(10, new Label("Tasks:"), taskListContainer, addTaskButton);
+        taskSection.setPadding(new Insets(10));
+        
+        
+        //---------------------------------------------------------------------------
+        // Edit button setup
+        //---------------------------------------------------------------------------
+        
         //Edit button to update Project details
         editButton = new Button("Edit");
         editButton.setOnAction(e -> editProjectDetails());
@@ -71,6 +99,9 @@ public class ProjectPane extends HBox {
             }
         });
 
+        HBox checkAndEdit = new HBox(editButton, completedCheckBox);
+        checkAndEdit.setSpacing(20);
+        
         // Styling and Spacing
         this.setSpacing(15);
         this.setPadding(new Insets(10));
@@ -78,9 +109,12 @@ public class ProjectPane extends HBox {
 
         // Add elements to the pane
         this.getChildren().addAll(nameLabel, descriptionLabel, dueDateLabel,
-                completedCheckBox, editButton);
+                checkAndEdit, taskSection);
     }
     
+    public Project getProject() {
+        return project;
+    }
     private void saveProjectDetails() {
         project.setProjectName(nameField.getText());
         project.setProjectDueDate(dueDateField.getText());
@@ -107,5 +141,18 @@ public class ProjectPane extends HBox {
             descriptionLabel.setText("Description: " + project.getProjectDescription());
         });
     }
+    public void refreshTaskList() {
+        // Clear current task list in the UI
+        taskListContainer.getChildren().clear();
+
+        // Add tasks from project to the UI
+        for (Task task : project.getTasks()) {
+            TaskPane taskPane = new TaskPane(task);  // Create TaskPane for each task
+            taskListContainer.getChildren().add(taskPane);  // Add to the task list container
+        }
+    }
 
 }
+
+
+
