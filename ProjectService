@@ -1,3 +1,11 @@
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Optional;
+
+/**
+ *
+ * @author user
+ */
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
@@ -69,9 +77,9 @@ public class ProjectService {
             dialog.setResultConverter(dialogButton -> {
                 if (dialogButton == okButton) {
                     Project newProject = new Project();
-                    newProject.setProjectName("Name: " + nameField.getText());
-                    newProject.setProjectDueDate("Due Date: " + dueDateField.getValue().toString());
-                    newProject.setProjectDescription("Description: " + descriptionField.getText());
+                    newProject.setProjectName(nameField.getText());
+                    newProject.setProjectDueDate(dueDateField.getValue().toString());
+                    newProject.setProjectDescription(descriptionField.getText());
                     return newProject;
                 }
                 return null;
@@ -91,9 +99,9 @@ public class ProjectService {
             ButtonType saveButton = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
             dialog.getDialogPane().getButtonTypes().addAll(saveButton, ButtonType.CANCEL);
 
-            TextField nameField = new TextField();
+            TextField nameField = new TextField(existingProject.getProjectName());
             DatePicker dueDateField = new DatePicker(LocalDate.now());
-            TextField descriptionField = new TextField();
+            TextField descriptionField = new TextField(existingProject.getProjectDescription());
             
             nameField.setPromptText("Project Name");
             descriptionField.setPromptText("Project Description");
