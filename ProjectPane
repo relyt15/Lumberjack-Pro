@@ -27,29 +27,16 @@ public class ProjectPane extends VBox {
         this.project = project;
         ProjectService projServ = new ProjectService();
         
-        // Text field for Project Name
-        nameField = new TextField(project.getProjectName());
-        nameField.setPromptText("Project Name");
-
-        
         // Label for Project Name
-        nameLabel = new Label(project.getProjectName());
+        nameLabel = new Label("Project: " + project.getProjectName());
         nameLabel.setStyle("-fx-font-weight: bold;");
         
-
-        // Text field for Project Due Date
-        dueDateField = new TextField(project.getProjectDueDate());
-        dueDateField.setPromptText("Due Date (YYYY-MM-DD)");
         
         // Label for Due Date
-        dueDateLabel = new Label(project.getProjectDueDate());
-        
-        // Text field for Project Description
-        descriptionField = new TextField(project.getProjectDescription());
-        descriptionField.setPromptText("Project Description");
+        dueDateLabel = new Label("Due Date: " + project.getProjectDueDate());
         
         // Label for Project Description
-        descriptionLabel = new Label(project.getProjectDescription());
+        descriptionLabel = new Label("Description: " + project.getProjectDescription());
 
         // Checkbox for Completion
         completedCheckBox = new CheckBox();
@@ -136,7 +123,7 @@ public class ProjectPane extends VBox {
             project = updated;
 
             // Update UI labels
-            nameLabel.setText("Name: " + project.getProjectName());
+            nameLabel.setText("Project: " + project.getProjectName());
             dueDateLabel.setText("Due Date: " + project.getProjectDueDate());
             descriptionLabel.setText("Description: " + project.getProjectDescription());
         });
