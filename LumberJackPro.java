@@ -1,4 +1,3 @@
-//import java.util.Scanner;
 import java.util.Optional;
 import javafx.application.Application;
 import javafx.geometry.HPos;
@@ -21,7 +20,7 @@ import javafx.scene.text.Font;
 public class LumberjackPro extends Application {
     private BorderPane windowContainer;
     private BorderPane greetContainer;
-    private HBox taskContainer;
+    //private HBox taskContainer;
     private HBox projectContainer;
     
     
@@ -29,7 +28,6 @@ public class LumberjackPro extends Application {
     public void start(Stage primaryStage) {
         windowContainer = new BorderPane();
         greetContainer = new BorderPane();
-        taskContainer = new HBox(10);  // Container to hold task panes
         projectContainer = new HBox(20); // Container to hold project panes   
         
         
@@ -63,21 +61,12 @@ public class LumberjackPro extends Application {
         //------------------------------------------------------------------------------------------------
         // setting up the panes to go in the scene
         //------------------------------------------------------------------------------------------------
-        VBox taskLayout = new VBox(20, addTaskButton, taskContainer);  // Overall layout
-        HBox projectLayout = new HBox(30, addProjectButton, projectContainer, taskLayout);
-        
-        
-        //Scrollbar made for Task Sections
-    /*  ScrollPane scroll = new ScrollPane(); 
-        scroll.setContent(taskLayout);
-    */
+        HBox projectLayout = new HBox(30, addProjectButton, projectContainer);
         
         //Scrollbar made for Project Section
         ScrollPane scroll2 = new ScrollPane(); 
         scroll2.setContent(projectLayout);
         
-    /*  windowContainer.setBottom(scroll); 
-    */
         windowContainer.setCenter(scroll2); 
         greetContainer.setTop(greetLayout);
         
@@ -91,13 +80,14 @@ public class LumberjackPro extends Application {
         //-------------------------------------------------------------------------------------
         // Creating a default project
         //-------------------------------------------------------------------------------------
-        Project generalProject = new Project();
-        generalProject.setProjectName("Name: General");
-        generalProject.setProjectDueDate("Due Date: None");
-        generalProject.setProjectDescription("Description: General");
-        //Create ProjectPane and adds to the layout
-        ProjectPane projectPane = new ProjectPane(generalProject);
-        projectContainer.getChildren().add(projectPane);
+//        Project generalProject = new Project();
+//        generalProject.setProjectName("Name: General");
+//        generalProject.setProjectDueDate("Due Date: None");
+//        generalProject.setProjectDescription("Description: General");
+//        
+//        //Create ProjectPane and adds to the layout
+//        ProjectPane projectPane = new ProjectPane(generalProject);
+//        projectContainer.getChildren().add(projectPane);
         
         //-------------------------------------------------------------------------------------
         // setting up scene
@@ -114,16 +104,21 @@ public class LumberjackPro extends Application {
     }
 
     private void addNewTask() {
-        // Create new Task object (you can later gather this from user input)
-        Task newTask = new Task();
-        
-        // Create TaskPane and add to the layout
-        TaskPane taskPane = new TaskPane(newTask);
-        taskContainer.getChildren().add(taskPane);
+        TaskService taskService = new TaskService();
+
+        // Launch the task creation dialog
+        Optional<Task> result = taskService.newTaskDialog();
+        result.ifPresent(newTask -> {
+            if (!projectContainer.getChildren().isEmpty()) {
+                ProjectPane firstProjectPane = (ProjectPane) projectContainer.getChildren().get(0);
+                firstProjectPane.getProject().addTaskToProject(newTask);
+                firstProjectPane.refreshTaskList();  // Refresh the task list in the project pane
+            }
+        });
     }
     
     private void addNewProject() {
-        //prompt dialogue box first from project service
+        // Prompt dialogue box first from project service
         // information entered into dialogue box gets set to project info
         // then the project pane accepts the info from the project into LABELS instead of textfields
         ProjectService man1 = new ProjectService();
@@ -135,10 +130,6 @@ public class LumberjackPro extends Application {
             projectContainer.getChildren().add(projectPane);
         });
         
-        
-        //Create ProjectPane and adds to the layout
-        //ProjectPane projectPane = new ProjectPane(newProject);
-        //projectContainer.getChildren().add(projectPane);
     }
 
     public static void main(String[] args) {
