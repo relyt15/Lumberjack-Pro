@@ -9,14 +9,16 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.DatePicker;
+import javafx.scene.layout.HBox;
 
-public class TaskPane extends VBox {
+public class TaskPane extends HBox {
     private Task task;
     private TextField nameField;
     private DatePicker dueDateField;
     private TextField descriptionField;
     private Label nameLabel;
     private Label descriptionLabel;
+    private Label dueDateLabel;
     private CheckBox completedCheckBox;
     private Button saveButton;
     private Label status;
@@ -25,24 +27,17 @@ public class TaskPane extends VBox {
         this.task = task;
         TaskService taskServ = new TaskService();
         
-        // Text field for Task Name
-        nameField = new TextField(task.getTaskName());
-        nameField.setPromptText("Task Name");
-        nameField.setAlignment(Pos.CENTER);
-        
-
         // Label for Task Name
         nameLabel = new Label(task.getTaskName());
         nameLabel.setStyle("-fx-font-weight: bold;");
+        nameLabel.setAlignment(Pos.CENTER);
         
-        // Text field for Task Due Date
-        dueDateField = new DatePicker(LocalDate.now());
-        dueDateField.setOnAction(this::processDateChoice);
         
-        // Text field for Task Description
-        descriptionField = new TextField(task.getTaskDescription());
-        descriptionField.setAlignment(Pos.CENTER);
-        descriptionField.setPromptText("Task Description");   
+        //Label for Due Date
+        dueDateLabel = new Label(task.getTaskDueDate());
+        
+        // Label for task description
+        descriptionLabel = new Label(task.getTaskDescription());
         
 
         // Checkbox for Completion
@@ -75,8 +70,8 @@ public class TaskPane extends VBox {
         this.setAlignment(Pos.CENTER_LEFT);
 
         // Add elements to the pane
-        this.getChildren().addAll(nameField, dueDateField, descriptionField,
-                completedCheckBox, saveButton);
+        this.getChildren().addAll(nameLabel, descriptionLabel, dueDateLabel,
+                completedCheckBox);
     }
     
     private void saveTaskDetails() {
@@ -90,8 +85,5 @@ public class TaskPane extends VBox {
         }
     }
 
-    private void processDateChoice(ActionEvent t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 
 }
