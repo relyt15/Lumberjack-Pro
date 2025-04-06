@@ -1,4 +1,13 @@
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Optional;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 
 /**
  *
@@ -14,19 +23,14 @@ public class TaskService {
 
     
     public boolean removeTask(Task task) {
-        boolean removed = false;
-        for(int i = 0; i < taskList.size(); i++) {
-            if(taskList.contains(i) == true){
-                taskList.remove(i);
-                removed = true;
-                break;
-            }
-            else{
-                System.out.println("Task: " + task + " was not found or removed.");
-            }
-        } 
-        return removed;
-    } // end removeTask
+        if (taskList.contains(task)) {
+            taskList.remove(task);
+            return true;
+        } else {
+            System.out.println("Task: " + task + " was not found or removed.");
+            return false;
+        }
+    }
             
             
             
@@ -36,6 +40,46 @@ public class TaskService {
             System.out.println(taskList.get(i));
         }        
         
+    }
+        
+    public Optional<Task> newTaskDialog() {
+        Dialog<Task> dialog = new Dialog<>();
+        dialog.setTitle("New Task");
+
+        ButtonType createButton = new ButtonType("Create", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(createButton, ButtonType.CANCEL);
+
+        TextField nameField = new TextField();
+        DatePicker dueDateField = new DatePicker(LocalDate.now());
+        TextField descriptionField = new TextField();
+
+        nameField.setPromptText("Task Name");
+        descriptionField.setPromptText("Task Description");
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.add(new Label("Task Name: "), 0, 0);
+        grid.add(nameField, 1, 0);
+        grid.add(new Label("Due Date: "), 0, 1);
+        grid.add(dueDateField, 1, 1);
+        grid.add(new Label("Description: "), 0, 2);
+        grid.add(descriptionField, 1, 2);
+
+        dialog.getDialogPane().setContent(grid);
+
+        dialog.setResultConverter(button -> {
+            if (button == createButton) {
+                Task task = new Task();
+                task.setTaskName("Name: " + nameField.getText());
+                task.setTaskDueDate("Due Date: " + dueDateField.getValue().toString());
+                task.setTaskDescription("Description: " + descriptionField.getText());
+                return task;
+            }
+            return null;
+        });
+
+        return dialog.showAndWait();
     }
     
 } // end TaskService
