@@ -63,6 +63,11 @@ public class LumberjackPro extends Application {
         // setting up the panes to go in the scene
         //------------------------------------------------------------------------------------------------
         HBox projectLayout = new HBox(30, addProjectButton, projectContainer);
+        //GridPane layout2 = new GridPane();
+        
+//        layout2.add(addProjectButton, 0, 0);
+//        layout2.add(projectContainer, 0, 1);
+//        layout2.setHgap(30);
         
         //Scrollbar made for Project Section
         ScrollPane scroll2 = new ScrollPane(); 
