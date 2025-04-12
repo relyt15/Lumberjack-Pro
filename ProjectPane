@@ -7,9 +7,11 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
-public class ProjectPane extends VBox {
+public class ProjectPane extends GridPane {
     private Project project;
     private TextField nameField;
     private TextField dueDateField;
@@ -22,6 +24,8 @@ public class ProjectPane extends VBox {
     private Button editButton;
     private VBox taskListContainer;
     private Button addTaskButton;
+    
+    private VBox vb;
 
     public ProjectPane(Project project) {
         this.project = project;
@@ -64,10 +68,9 @@ public class ProjectPane extends VBox {
             });
         });
         
+        
         VBox taskSection = new VBox(10, new Label("Tasks:"), taskListContainer, addTaskButton);
         taskSection.setPadding(new Insets(10));
-        
-        
         //---------------------------------------------------------------------------
         // Edit button setup
         //---------------------------------------------------------------------------
@@ -89,14 +92,16 @@ public class ProjectPane extends VBox {
         HBox checkAndEdit = new HBox(editButton, completedCheckBox);
         checkAndEdit.setSpacing(20);
         
+        vb = new VBox(nameLabel, descriptionLabel, dueDateLabel,
+                checkAndEdit, taskSection);
+                
         // Styling and Spacing
-        this.setSpacing(15);
+        //this.setSpacing(15);
         this.setPadding(new Insets(10));
         this.setAlignment(Pos.CENTER_LEFT);
 
         // Add elements to the pane
-        this.getChildren().addAll(nameLabel, descriptionLabel, dueDateLabel,
-                checkAndEdit, taskSection);
+        this.getChildren().addAll(vb);
     }
     
     public Project getProject() {
@@ -128,6 +133,7 @@ public class ProjectPane extends VBox {
             descriptionLabel.setText("Description: " + project.getProjectDescription());
         });
     }
+    
     public void refreshTaskList() {
         // Clear current task list in the UI
         taskListContainer.getChildren().clear();
