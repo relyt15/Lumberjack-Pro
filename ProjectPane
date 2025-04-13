@@ -1,12 +1,17 @@
+import java.util.Optional;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 
-public class ProjectPane extends HBox {
+public class ProjectPane extends GridPane {
     private Project project;
     private TextField nameField;
     private TextField dueDateField;
@@ -16,31 +21,26 @@ public class ProjectPane extends HBox {
     private Label descriptionLabel;
     private CheckBox completedCheckBox;
     private Button saveButton;
+    private Button editButton;
+    private VBox taskListContainer;
+    private Button addTaskButton;
+    
+    private VBox vb;
 
     public ProjectPane(Project project) {
         this.project = project;
         ProjectService projServ = new ProjectService();
         
-        // Text field for Project Name
-        nameField = new TextField(project.getProjectName());
-        nameField.setPromptText("Project Name");
-
-        
         // Label for Project Name
-        nameLabel = new Label(project.getProjectName());
+        nameLabel = new Label("Project: " + project.getProjectName());
         nameLabel.setStyle("-fx-font-weight: bold;");
         
-
-        // Text field for Project Due Date
-        dueDateField = new TextField(project.getProjectDueDate());
-        dueDateField.setPromptText("Due Date (YYYY-MM-DD)");
         
         // Label for Due Date
-        dueDateLabel = new Label("Due: " + project.getProjectDueDate());
+        dueDateLabel = new Label("Due Date: " + project.getProjectDueDate());
         
-        // Text field for Project Description
-        descriptionField = new TextField(project.getProjectDescription());
-        descriptionField.setPromptText("Project Description");        
+        // Label for Project Description
+        descriptionLabel = new Label("Description: " + project.getProjectDescription());
 
         // Checkbox for Completion
         completedCheckBox = new CheckBox();
@@ -49,6 +49,35 @@ public class ProjectPane extends HBox {
         // Save Button to update Project details
         saveButton = new Button("Save");
         saveButton.setOnAction(e -> saveProjectDetails());
+        
+        
+        //---------------------------------------------------------------------------
+        //Placing corresponding tasks within each project pane
+        //---------------------------------------------------------------------------
+        
+        taskListContainer = new VBox(5);
+        refreshTaskList();
+        
+        addTaskButton = new Button("Add Task");
+        addTaskButton.setOnAction(e -> {
+            TaskService taskService = new TaskService();
+            Optional<Task> result = taskService.newTaskDialog();
+            result.ifPresent(newTask -> {
+                project.addTaskToProject(newTask);
+                refreshTaskList(); // Make sure this updates your task UI
+            });
+        });
+        
+        
+        VBox taskSection = new VBox(10, new Label("Tasks:"), taskListContainer, addTaskButton);
+        taskSection.setPadding(new Insets(10));
+        //---------------------------------------------------------------------------
+        // Edit button setup
+        //---------------------------------------------------------------------------
+        
+        //Edit button to update Project details
+        editButton = new Button("Edit");
+        editButton.setOnAction(e -> editProjectDetails());
 
         // Update Project when checkbox is clicked
         completedCheckBox.setOnAction(e -> {
@@ -60,16 +89,24 @@ public class ProjectPane extends HBox {
             }
         });
 
+        HBox checkAndEdit = new HBox(editButton, completedCheckBox);
+        checkAndEdit.setSpacing(20);
+        
+        vb = new VBox(nameLabel, descriptionLabel, dueDateLabel,
+                checkAndEdit, taskSection);
+                
         // Styling and Spacing
-        this.setSpacing(15);
+        //this.setSpacing(15);
         this.setPadding(new Insets(10));
         this.setAlignment(Pos.CENTER_LEFT);
 
         // Add elements to the pane
-        this.getChildren().addAll(nameField, dueDateField, descriptionField,
-                completedCheckBox, saveButton);
+        this.getChildren().addAll(vb);
     }
     
+    public Project getProject() {
+        return project;
+    }
     private void saveProjectDetails() {
         project.setProjectName(nameField.getText());
         project.setProjectDueDate(dueDateField.getText());
@@ -80,10 +117,35 @@ public class ProjectPane extends HBox {
         else {
             project.setProjectStatus("Pending");
         }
+    } // end saveProjectDetails
+    
+    private void editProjectDetails(){
+        ProjectService man1 = new ProjectService();
+        
+        Optional<Project> result = man1.editProjectDialog(project);
+        result.ifPresent(updated -> {
+            // Update the local project reference
+            project = updated;
+
+            // Update UI labels
+            nameLabel.setText("Project: " + project.getProjectName());
+            dueDateLabel.setText("Due Date: " + project.getProjectDueDate());
+            descriptionLabel.setText("Description: " + project.getProjectDescription());
+        });
+    }
+    
+    public void refreshTaskList() {
+        // Clear current task list in the UI
+        taskListContainer.getChildren().clear();
+
+        // Add tasks from project to the UI
+        for (Task task : project.getTasks()) {
+            TaskPane taskPane = new TaskPane(task);  // Create TaskPane for each task
+            taskListContainer.getChildren().add(taskPane);  // Add to the task list container
+        }
     }
 
 }
-
 
 
 

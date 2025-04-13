@@ -21,8 +21,6 @@ public class Project {
         this.projectCompleted = false;  // Default not completed
     }
     
-    
-    
     // Setting up methods to set all data
    public String setProjectName(String projectName)
    {
@@ -74,26 +72,20 @@ public class Project {
        return projectCompleted;
    }
    
+   public ArrayList<Task> getTasks() {
+    return tasksInProject;
+}
+   
    // methods to add and remove tasks from this project's tasksInProject list
    public void addTaskToProject(Task task) {
         tasksInProject.add(task);
     }
-   public boolean removeTaskFromProject(Task task) {
-        boolean removed = false;
-            for(int i = 0; i < tasksInProject.size(); i++) {
-                if(tasksInProject.contains(i) == true){
-                    tasksInProject.remove(i);
-                    removed = true;
-                    break;
-                }
-                else{
-                    System.out.println("Task: " + task + " was not found or removed from this project.");
-                }
-            } 
-        return removed;
+   
+   public void removeTaskFromProject(Task task) {
+        tasksInProject.remove(task);
    }
    
-   
+   @Override
    public String toString() {
        String ProjectDetails = "Project name: " + this.getProjectName() + 
             "\nProject Description: " + this.getProjectDescription() + "\nProject due date: " 

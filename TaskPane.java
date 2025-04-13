@@ -1,6 +1,5 @@
-package com.mycompany.lumberjack_pro;
-
 import java.time.LocalDate;
+import java.util.Optional;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
@@ -11,40 +10,36 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.DatePicker;
+import javafx.scene.layout.HBox;
 
-public class TaskPane extends VBox {
+public class TaskPane extends HBox {
     private Task task;
     private TextField nameField;
     private DatePicker dueDateField;
     private TextField descriptionField;
     private Label nameLabel;
     private Label descriptionLabel;
+    private Label dueDateLabel;
     private CheckBox completedCheckBox;
     private Button saveButton;
     private Label status;
+    private Button editTaskButton;
 
     public TaskPane(Task task) {
         this.task = task;
         TaskService taskServ = new TaskService();
         
-        // Text field for Task Name
-        nameField = new TextField(task.getTaskName());
-        nameField.setPromptText("Task Name");
-        nameField.setAlignment(Pos.CENTER);
-        
-
         // Label for Task Name
-        nameLabel = new Label(task.getTaskName());
+        nameLabel = new Label("Task: " + task.getTaskName());
         nameLabel.setStyle("-fx-font-weight: bold;");
+        nameLabel.setAlignment(Pos.CENTER);
         
-        // Text field for Task Due Date
-        dueDateField = new DatePicker(LocalDate.now());
-        dueDateField.setOnAction(this::processDateChoice);
         
-        // Text field for Task Description
-        descriptionField = new TextField(task.getTaskDescription());
-        descriptionField.setAlignment(Pos.CENTER);
-        descriptionField.setPromptText("Task Description");   
+        //Label for Due Date
+        dueDateLabel = new Label("Due Date: " + task.getTaskDueDate());
+        
+        // Label for task description
+        descriptionLabel = new Label("Description: " + task.getTaskDescription());
         
 
         // Checkbox for Completion
@@ -59,6 +54,8 @@ public class TaskPane extends VBox {
         saveButton.setOnAction(e -> dueDateField.setEditable(false));
         saveButton.setOnAction(e -> nameField.setEditable(false));
 
+        editTaskButton = new Button("Edit");
+        editTaskButton.setOnAction(e -> editTaskDetails());
         
         
         // Update Task when checkbox is clicked
@@ -77,8 +74,8 @@ public class TaskPane extends VBox {
         this.setAlignment(Pos.CENTER_LEFT);
 
         // Add elements to the pane
-        this.getChildren().addAll(nameField, dueDateField, descriptionField,
-                completedCheckBox, saveButton);
+        this.getChildren().addAll(nameLabel, descriptionLabel, dueDateLabel,
+                completedCheckBox, editTaskButton);
     }
     
     private void saveTaskDetails() {
@@ -91,9 +88,21 @@ public class TaskPane extends VBox {
             task.setTaskStatus("Pending");
         }
     }
+    
+    private void editTaskDetails() {
+        TaskService man1 = new TaskService();
+        
+        Optional<Task> result = man1.editTaskDialog(task);
+        result.ifPresent(updated -> {
+            // Update the local project reference
+            task = updated;
 
-    private void processDateChoice(ActionEvent t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+            // Update UI labels
+            nameLabel.setText("Task: " + task.getTaskName());
+            dueDateLabel.setText("Due Date: " + task.getTaskDueDate());
+            descriptionLabel.setText("Description: " + task.getTaskDescription());
+        });
     }
+
 
 }
