@@ -119,11 +119,10 @@ public class ProjectService {
 
             dialog.setResultConverter(button -> {
                 if (button == saveButton) {
-                    Project updatedProject = new Project();
-                    updatedProject.setProjectName(nameField.getText());
-                    updatedProject.setProjectDueDate(dueDateField.getValue().toString());
-                    updatedProject.setProjectDescription(descriptionField.getText());
-                    return updatedProject;
+                    existingProject.setProjectName(nameField.getText());
+                    existingProject.setProjectDueDate(dueDateField.getValue().toString());
+                    existingProject.setProjectDescription(descriptionField.getText());
+                    return existingProject; // Return the *same* object with updated info
                 }
                 return null;
             });
