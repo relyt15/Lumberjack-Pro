@@ -40,10 +40,9 @@ public class LumberjackPro extends Application {
         //------------------------------------------------------------------------------------------------
         // initializing buttons and linking their event actions
         //------------------------------------------------------------------------------------------------
-        Button addTaskButton = new Button("+ New Task");
         Button addProjectButton = new Button("+ New Project");
 
-        addTaskButton.setOnAction(e -> addNewTask());  // Handle addTask button click
+        //addTaskButton.setOnAction(e -> addNewTask());  // Handle addTask button click
         addProjectButton.setOnAction (e -> addNewProject()); // handles addProject button click
         //------------------------------------------------------------------------------------------------
         // setting up logo on main page
@@ -84,18 +83,6 @@ public class LumberjackPro extends Application {
         wholeLayout.setStyle("-fx-background-color: beige; -fx-padding: 20px;");
         
         //-------------------------------------------------------------------------------------
-        // Creating a default project
-        //-------------------------------------------------------------------------------------
-//        Project generalProject = new Project();
-//        generalProject.setProjectName("Name: General");
-//        generalProject.setProjectDueDate("Due Date: None");
-//        generalProject.setProjectDescription("Description: General");
-//        
-//        //Create ProjectPane and adds to the layout
-//        ProjectPane projectPane = new ProjectPane(generalProject);
-//        projectContainer.getChildren().add(projectPane);
-        
-        //-------------------------------------------------------------------------------------
         // setting up scene
         //-------------------------------------------------------------------------------------
         Scene scene = new Scene(wholeLayout, 1200, 600, Color.BEIGE);
@@ -107,20 +94,6 @@ public class LumberjackPro extends Application {
         primaryStage.setResizable(true);
         primaryStage.setScene(scene);
         primaryStage.show();
-    }
-
-    private void addNewTask() {
-        TaskService taskService = new TaskService();
-
-        // Launch the task creation dialog
-        Optional<Task> result = taskService.newTaskDialog();
-        result.ifPresent(newTask -> {
-            if (!projectContainer.getChildren().isEmpty()) {
-                ProjectPane firstProjectPane = (ProjectPane) projectContainer.getChildren().get(0);
-                firstProjectPane.getProject().addTaskToProject(newTask);
-                firstProjectPane.refreshTaskList();  // Refresh the task list in the project pane
-            }
-        });
     }
     
     private void addNewProject() {
