@@ -15,13 +15,13 @@ import javafx.scene.layout.GridPane;
  */
 public class TaskService {
     ArrayList<Task> taskList = new ArrayList<Task>() ;
-    
+
     //methods to add and remove tasks from taskList
     public void addTask(Task task) {
         taskList.add(task);
     }
 
-    
+
     public boolean removeTask(Task task) {
         if (taskList.contains(task)) {
             taskList.remove(task);
@@ -31,17 +31,17 @@ public class TaskService {
             return false;
         }
     }
-            
-            
-            
-        public void displayAllTasks() {
+
+
+
+    public void displayAllTasks() {
         System.out.println("All Food Items: ");
         for (int i = 0; i < taskList.size(); i++) {
             System.out.println(taskList.get(i));
-        }        
-        
+        }
+
     }
-        
+
     public Optional<Task> newTaskDialog() {
         Dialog<Task> dialog = new Dialog<>();
         dialog.setTitle("New Task");
@@ -71,9 +71,9 @@ public class TaskService {
         dialog.setResultConverter(button -> {
             if (button == createButton) {
                 Task task = new Task();
-                task.setTaskName(nameField.getText());
-                task.setTaskDueDate(dueDateField.getValue().toString());
-                task.setTaskDescription(descriptionField.getText());
+                task.setTaskName("Name: " + nameField.getText());
+                task.setTaskDueDate("Due Date: " + dueDateField.getValue().toString());
+                task.setTaskDescription("Description: " + descriptionField.getText());
                 return task;
             }
             return null;
@@ -81,48 +81,5 @@ public class TaskService {
 
         return dialog.showAndWait();
     }
-    
-    public Optional<Task> editTaskDialog(Task existingTask){   
 
-            // Create a dialog
-            Dialog<Task> dialog = new Dialog<>();
-            dialog.setTitle("Edit Task");
-            //dialog.setHeaderText("This is a sample dialog");
-            dialog.setContentText("Click OK to close the dialog");
-            ButtonType saveButton = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
-            dialog.getDialogPane().getButtonTypes().addAll(saveButton, ButtonType.CANCEL);
-
-            TextField nameField = new TextField(existingTask.getTaskName());
-            DatePicker dueDateField = new DatePicker(LocalDate.now());
-            TextField descriptionField = new TextField(existingTask.getTaskDescription());
-            
-            nameField.setPromptText("Task Name");
-            descriptionField.setPromptText("Task Description");
-            
-
-            GridPane grid = new GridPane();
-            grid.add(new Label("Task Name: "), 0, 0);
-            grid.add(nameField, 1, 0);
-            grid.add(new Label("Due Date: "), 0, 1);
-            grid.add(dueDateField, 1, 1);
-            grid.add(new Label("Description: "), 0, 2);
-            grid.add(descriptionField, 1, 2);
-
-            dialog.getDialogPane().setContent(grid);
-
-            dialog.setResultConverter(button -> {
-                if (button == saveButton) {
-                    Task updatedTask = new Task();
-                    updatedTask.setTaskName(nameField.getText());
-                    updatedTask.setTaskDueDate(dueDateField.getValue().toString());
-                    updatedTask.setTaskDescription(descriptionField.getText());
-                    return updatedTask;
-                }
-                return null;
-            });
-        
-        
-            return dialog.showAndWait();
-        }
-    
 } // end TaskService
