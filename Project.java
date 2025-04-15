@@ -1,3 +1,6 @@
+package com.mycompany.lumberjack_pro;
+
+
 import java.util.ArrayList;
 
 public class Project {

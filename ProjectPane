@@ -10,37 +10,40 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 public class ProjectPane extends GridPane {
     private Project project;
     private TextField nameField;
     private TextField dueDateField;
     private TextField descriptionField;
-    private Label nameLabel;
-    private Label dueDateLabel;
-    private Label descriptionLabel;
+    private Text nameLabel;
+    private Text dueDateLabel;
+    private Text descriptionLabel;
+    private Text accomplish;
     private CheckBox completedCheckBox;
     private Button saveButton;
     private Button editButton;
     private VBox taskListContainer;
     private Button addTaskButton;
-    
+    private Button removeProjectButton;
     private VBox vb;
 
     public ProjectPane(Project project) {
         this.project = project;
         ProjectService projServ = new ProjectService();
+        TaskService taskServ = new TaskService();
         
         // Label for Project Name
-        nameLabel = new Label("Project: " + project.getProjectName());
-        nameLabel.setStyle("-fx-font-weight: bold;");
+        nameLabel = new Text("Project: " + project.getProjectName());
         
         
         // Label for Due Date
-        dueDateLabel = new Label("Due Date: " + project.getProjectDueDate());
+        dueDateLabel = new Text("Due Date: " + project.getProjectDueDate());
         
         // Label for Project Description
-        descriptionLabel = new Label("Description: " + project.getProjectDescription());
+        descriptionLabel = new Text("Description: " + project.getProjectDescription());
+
 
         // Checkbox for Completion
         completedCheckBox = new CheckBox();
@@ -68,10 +71,23 @@ public class ProjectPane extends GridPane {
             });
         });
         
+        removeProjectButton = new Button("Delete Project");
+        removeProjectButton.setOnAction(e -> {
+        ProjectService projService = new ProjectService();
+        projServ.removeProject(project);
+
+    // Remove ProjectPane from parent container
+        if (this.getParent() instanceof HBox) {
+        HBox parent = (HBox) this.getParent();
+        parent.getChildren().remove(this);
+    }
+        });
+        
         Label taskLabel = new Label("Tasks: ");
-        VBox taskSection = new VBox(5, taskLabel, taskListContainer,addTaskButton);
-        taskLabel.setStyle("-fx-font-weight: bold;");
+        VBox taskSection = new VBox(5, taskLabel, taskListContainer, addTaskButton, removeProjectButton);
         taskSection.setPadding(new Insets(5));
+        this.setStyle("-fx-border-color: gray; -fx-border-width: 2px; -fx-border-radius: 5px; -fx-padding: 10px;");
+
         //---------------------------------------------------------------------------
         // Edit button setup
         //---------------------------------------------------------------------------
@@ -80,17 +96,16 @@ public class ProjectPane extends GridPane {
         editButton = new Button("Edit");
         editButton.setOnAction(e -> editProjectDetails());
 
-//        // Update Project when checkbox is clicked
-//        completedCheckBox.setOnAction(e -> {
-//            if (completedCheckBox.isSelected()) {
-//                project.setProjectCompleted(); // Mark Project as completed
-//                projServ.removeProject(project);
-//            } else {
-//                project.setProjectStatus("pending"); // Set status back to pending.
-//            }
-//        });
-//        HBox checkAndEdit = new HBox(editButton);
-//        checkAndEdit.setSpacing(20);
+
+        // Update Project when checkbox is clicked
+        completedCheckBox.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
+            descriptionLabel.setStrikethrough(isNowSelected);
+            dueDateLabel.setStrikethrough(isNowSelected);
+            nameLabel.setStrikethrough(isNowSelected);
+        });
+
+        HBox checkAndEdit = new HBox(editButton, completedCheckBox);
+        checkAndEdit.setSpacing(20);
         
         vb = new VBox(nameLabel, descriptionLabel, dueDateLabel,
                 editButton, taskSection);
@@ -147,4 +162,22 @@ public class ProjectPane extends GridPane {
     }
 
 }
+            // Update UI labels
+            nameLabel.setText("Project: " + project.getProjectName());
+            dueDateLabel.setText("Due Date: " + project.getProjectDueDate());
+            descriptionLabel.setText("Description: " + project.getProjectDescription());
+        });
+    }
+    
+    public void refreshTaskList() {
+        // Clear current task list in the UI
+        taskListContainer.getChildren().clear();
 
+        // Add tasks from project to the UI
+        for (Task task : project.getTasks()) {
+            TaskPane taskPane = new TaskPane(task, project, taskListContainer);
+            taskListContainer.getChildren().add(taskPane);  // Add to the task list container
+        }
+    }
+
+}
