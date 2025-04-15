@@ -1,5 +1,3 @@
-package com.mycompany.lumberjack_pro;
-
 public class Task {
     
     // Task attributes
