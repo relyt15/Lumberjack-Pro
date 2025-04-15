@@ -1,27 +1,19 @@
 import java.util.Optional;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.control.DatePicker;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 
 public class TaskPane extends VBox {
     private Task task;
-    private TextField nameField;
-    private DatePicker dueDateField;
-    private TextField descriptionField;
     private Text nameLabel;
     private Text descriptionLabel;
     private Text dueDateLabel;
     private CheckBox completedCheckBox;
-    private Button saveButton;
-    private Label status;
     private Button editTaskButton;
     private Button undoTaskButton;
 
@@ -56,47 +48,34 @@ public class TaskPane extends VBox {
         });
         
         
-        // Save Button to update task details
-        saveButton = new Button("Save");
-        saveButton.setOnAction(e -> descriptionField.setEditable(false));
-        saveButton.setOnAction(e -> dueDateField.setEditable(false));
-        saveButton.setOnAction(e -> nameField.setEditable(false));
 
         editTaskButton = new Button("Edit");
         editTaskButton.setOnAction(e -> editTaskDetails());
 
-        HBox checkAndEdit = new HBox(editTaskButton, completedCheckBox);
-        checkAndEdit.setSpacing(10);
 
-
-        undoTaskButton = new Button("Delete");        
-          undoTaskButton.setOnAction(e -> {
-          taskListContainer.getChildren().remove(this); // remove from UI
-          proj.removeTaskFromProject(task); // remove from model
-          taskServ.removeTask(task); // remove from persistent storage
-        });
+	undoTaskButton = new Button("Delete");        
+        undoTaskButton.setOnAction(e -> {
+            taskListContainer.getChildren().remove(this); // remove from UI
+            proj.removeTaskFromProject(task); // remove from model
+            taskServ.removeTask(task); // remove from storage
+            });
       
 
+        HBox nameDate = new HBox(nameLabel, dueDateLabel);
+        nameDate.setSpacing(10);
+        HBox checkEditDelete = new HBox(completedCheckBox, editTaskButton, undoTaskButton);
+        checkEditDelete.setSpacing(10);
+        
         // Styling and Spacing
         this.setSpacing(5);
-        this.setPadding(new Insets(10));
+        this.setPadding(new Insets(5));
         this.setAlignment(Pos.CENTER_LEFT);
 
         // Add elements to the pane
-        this.getChildren().addAll(nameLabel, descriptionLabel, dueDateLabel,
-                checkAndEdit, undoTaskButton);
+        this.getChildren().addAll(nameDate, descriptionLabel,
+                checkEditDelete);
     }
     
-    private void saveTaskDetails() {
-        task.setTaskName(nameField.getText());
-        task.setTaskDescription(descriptionField.getText());
-        if (completedCheckBox.isSelected()) {
-            task.setTaskCompleted();
-        }
-        else {
-            task.setTaskStatus("Pending");
-        }
-    }
     
     private void editTaskDetails() {
         TaskService man1 = new TaskService();
