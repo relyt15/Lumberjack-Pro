@@ -3,7 +3,6 @@ import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -61,8 +60,8 @@ public class LumberjackPro extends Application {
         // setting up the panes to go in the scene
         //------------------------------------------------------------------------------------------------
         HBox projectLayout = new HBox(30, addProjectButton, projectContainer);
-        //GridPane layout2 = new GridPane();
-        
+//        GridPane layout2 = new GridPane();
+//        
 //        layout2.add(addProjectButton, 0, 0);
 //        layout2.add(projectContainer, 0, 1);
 //        layout2.setHgap(30);

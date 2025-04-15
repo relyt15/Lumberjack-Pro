@@ -1,20 +1,17 @@
-import java.time.LocalDate;
 import java.util.Optional;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.DatePicker;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 
-public class TaskPane extends HBox {
+public class TaskPane extends VBox {
     private Task task;
     private TextField nameField;
     private DatePicker dueDateField;
@@ -68,23 +65,26 @@ public class TaskPane extends HBox {
         editTaskButton = new Button("Edit");
         editTaskButton.setOnAction(e -> editTaskDetails());
 
+        HBox checkAndEdit = new HBox(editTaskButton, completedCheckBox);
+        checkAndEdit.setSpacing(10);
 
-	undoTaskButton = new Button("Delete");        
-        undoTaskButton.setOnAction(e -> {
-        taskListContainer.getChildren().remove(this); // remove from UI
-        proj.removeTaskFromProject(task); // remove from model
-        taskServ.removeTask(task); // remove from persistent storage
-    	});
+
+        undoTaskButton = new Button("Delete");        
+          undoTaskButton.setOnAction(e -> {
+          taskListContainer.getChildren().remove(this); // remove from UI
+          proj.removeTaskFromProject(task); // remove from model
+          taskServ.removeTask(task); // remove from persistent storage
+        });
       
 
         // Styling and Spacing
-        this.setSpacing(15);
+        this.setSpacing(5);
         this.setPadding(new Insets(10));
         this.setAlignment(Pos.CENTER_LEFT);
 
         // Add elements to the pane
         this.getChildren().addAll(nameLabel, descriptionLabel, dueDateLabel,
-                completedCheckBox, editTaskButton, undoTaskButton);
+                checkAndEdit, undoTaskButton);
     }
     
     private void saveTaskDetails() {

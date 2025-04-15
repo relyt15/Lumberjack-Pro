@@ -83,9 +83,9 @@ public class ProjectPane extends GridPane {
     }
         });
         
-        
-        VBox taskSection = new VBox(10, new Label("Tasks:"), taskListContainer, addTaskButton, removeProjectButton);
-        taskSection.setPadding(new Insets(10));
+        Label taskLabel = new Label("Tasks: ");
+        VBox taskSection = new VBox(5, taskLabel, taskListContainer, addTaskButton, removeProjectButton);
+        taskSection.setPadding(new Insets(5));
         this.setStyle("-fx-border-color: gray; -fx-border-width: 2px; -fx-border-radius: 5px; -fx-padding: 10px;");
 
         //---------------------------------------------------------------------------
@@ -95,6 +95,7 @@ public class ProjectPane extends GridPane {
         //Edit button to update Project details
         editButton = new Button("Edit");
         editButton.setOnAction(e -> editProjectDetails());
+
 
         // Update Project when checkbox is clicked
         completedCheckBox.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
@@ -107,7 +108,8 @@ public class ProjectPane extends GridPane {
         checkAndEdit.setSpacing(20);
         
         vb = new VBox(nameLabel, descriptionLabel, dueDateLabel,
-                checkAndEdit, taskSection);
+                editButton, taskSection);
+        vb.setSpacing(5);
                 
         // Styling and Spacing
         //this.setSpacing(15);
