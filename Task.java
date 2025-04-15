@@ -1,3 +1,5 @@
+package com.mycompany.lumberjack_pro;
+
 public class Task {
     
     // Task attributes
@@ -70,6 +72,7 @@ public class Task {
        return taskCompleted;
    }
    
+   @Override
    public String toString() {
        String taskDetails = "Task name: " + this.getTaskName() + 
             "\nTask Description: " + this.getTaskDescription() + "\nTask due date: " 
