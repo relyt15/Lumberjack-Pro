@@ -19,7 +19,6 @@ import javafx.scene.text.Font;
 public class LumberjackPro extends Application {
     private BorderPane windowContainer;
     private BorderPane greetContainer;
-    //private HBox taskContainer;
     private HBox projectContainer;
     
     
@@ -40,16 +39,15 @@ public class LumberjackPro extends Application {
         //------------------------------------------------------------------------------------------------
         Button addProjectButton = new Button("+ New Project");
 
-        //addTaskButton.setOnAction(e -> addNewTask());  // Handle addTask button click
-        addProjectButton.setOnAction (e -> addNewProject()); // handles addProject button click
+        addProjectButton.setOnAction (e -> addNewProject()); 
         //------------------------------------------------------------------------------------------------
         // setting up logo on main page
         //------------------------------------------------------------------------------------------------
         Image tree2 = new Image(getClass().getResourceAsStream("/Illustration19.png"));
         ImageView treeImageView = new ImageView(tree2);
         
-        treeImageView.setFitWidth(200);  // Adjust width of the image
-        treeImageView.setFitHeight(200); // Adjust height of the image
+        treeImageView.setFitWidth(200); 
+        treeImageView.setFitHeight(200); 
         treeImageView.setPreserveRatio(true);
         
         VBox greetLayout = new VBox(15, greeting, treeImageView);
@@ -60,11 +58,6 @@ public class LumberjackPro extends Application {
         // setting up the panes to go in the scene
         //------------------------------------------------------------------------------------------------
         HBox projectLayout = new HBox(30, addProjectButton, projectContainer);
-//        GridPane layout2 = new GridPane();
-//        
-//        layout2.add(addProjectButton, 0, 0);
-//        layout2.add(projectContainer, 0, 1);
-//        layout2.setHgap(30);
         
         //Scrollbar made for Project Section
         ScrollPane scroll2 = new ScrollPane(); 
@@ -97,7 +90,7 @@ public class LumberjackPro extends Application {
     private void addNewProject() {
         // Prompt dialogue box first from project service
         // information entered into dialogue box gets set to project info
-        // then the project pane accepts the info from the project into LABELS instead of textfields
+        // then the project pane accepts the info from the project info
         ProjectService man1 = new ProjectService();
         Optional<Project> result = man1.newProjectDialog();
 
