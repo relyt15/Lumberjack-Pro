@@ -11,41 +11,52 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.DatePicker;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
+
 
 public class TaskPane extends HBox {
     private Task task;
     private TextField nameField;
     private DatePicker dueDateField;
     private TextField descriptionField;
-    private Label nameLabel;
-    private Label descriptionLabel;
-    private Label dueDateLabel;
+    private Text nameLabel;
+    private Text descriptionLabel;
+    private Text dueDateLabel;
     private CheckBox completedCheckBox;
     private Button saveButton;
     private Label status;
     private Button editTaskButton;
+    private Button undoTaskButton;
 
-    public TaskPane(Task task) {
+    public TaskPane(Task task, Project proj, VBox taskListContainer) {
         this.task = task;
         TaskService taskServ = new TaskService();
+
+      
+        this.setStyle("-fx-border-color: gray; -fx-border-width: 2px; -fx-border-radius: 5px; -fx-padding: 10px;");
         
         // Label for Task Name
-        nameLabel = new Label("Task: " + task.getTaskName());
+        nameLabel = new Text("Task: " + task.getTaskName());
         nameLabel.setStyle("-fx-font-weight: bold;");
-        nameLabel.setAlignment(Pos.CENTER);
+        this.setAlignment(Pos.CENTER_LEFT);
         
         
         //Label for Due Date
-        dueDateLabel = new Label("Due Date: " + task.getTaskDueDate());
+        dueDateLabel = new Text("Due Date: " + task.getTaskDueDate());
         
         // Label for task description
-        descriptionLabel = new Label("Description: " + task.getTaskDescription());
+        descriptionLabel = new Text("Description: " + task.getTaskDescription());
+
         
 
-        // Checkbox for Completion
+        // Checkbox for Strikethrough Completion
         completedCheckBox = new CheckBox();
-        completedCheckBox.setSelected(task.isTaskCompleted());
-        
+        completedCheckBox.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
+            descriptionLabel.setStrikethrough(isNowSelected);
+            dueDateLabel.setStrikethrough(isNowSelected);
+            nameLabel.setStrikethrough(isNowSelected);
+
+        });
         
         
         // Save Button to update task details
@@ -56,17 +67,15 @@ public class TaskPane extends HBox {
 
         editTaskButton = new Button("Edit");
         editTaskButton.setOnAction(e -> editTaskDetails());
-        
-        
-        // Update Task when checkbox is clicked
-        completedCheckBox.setOnAction(e -> {
-            if (completedCheckBox.isSelected()) {
-                task.setTaskCompleted(); // Mark task as completed
-                taskServ.removeTask(task);
-            } else {
-                task.setTaskStatus("pending"); // Set status back to pending.
-            }
-        });
+
+
+	undoTaskButton = new Button("Delete");        
+        undoTaskButton.setOnAction(e -> {
+        taskListContainer.getChildren().remove(this); // remove from UI
+        proj.removeTaskFromProject(task); // remove from model
+        taskServ.removeTask(task); // remove from persistent storage
+    	});
+      
 
         // Styling and Spacing
         this.setSpacing(15);
@@ -75,7 +84,7 @@ public class TaskPane extends HBox {
 
         // Add elements to the pane
         this.getChildren().addAll(nameLabel, descriptionLabel, dueDateLabel,
-                completedCheckBox, editTaskButton);
+                completedCheckBox, editTaskButton, undoTaskButton);
     }
     
     private void saveTaskDetails() {
