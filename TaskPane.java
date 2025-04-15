@@ -1,18 +1,15 @@
-import java.time.LocalDate;
 import java.util.Optional;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.DatePicker;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
-public class TaskPane extends HBox {
+public class TaskPane extends VBox {
     private Task task;
     private TextField nameField;
     private DatePicker dueDateField;
@@ -67,15 +64,17 @@ public class TaskPane extends HBox {
                 task.setTaskStatus("pending"); // Set status back to pending.
             }
         });
-
+        
+        HBox checkAndEdit = new HBox(editTaskButton, completedCheckBox);
+        checkAndEdit.setSpacing(10);
         // Styling and Spacing
-        this.setSpacing(15);
+        this.setSpacing(5);
         this.setPadding(new Insets(10));
         this.setAlignment(Pos.CENTER_LEFT);
 
         // Add elements to the pane
         this.getChildren().addAll(nameLabel, descriptionLabel, dueDateLabel,
-                completedCheckBox, editTaskButton);
+                checkAndEdit);
     }
     
     private void saveTaskDetails() {
