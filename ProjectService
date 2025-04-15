@@ -1,9 +1,16 @@
+package com.mycompany.lumberjack_pro;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Optional;
 
 /**
  *
  * @author user
  */
+import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
+
 public class ProjectService {
     ArrayList<Project> projectList = new ArrayList<Project>() ;
     
@@ -13,7 +20,7 @@ public class ProjectService {
     }
     
     
-    public boolean removeProject(Project project) {
+    public boolean removeProject(Project project){
         boolean removed = false;
         for(int i = 0; i < projectList.size(); i++) {
             if(projectList.contains(i) == true){
@@ -30,12 +37,102 @@ public class ProjectService {
             
             
             
-        public void displayAllProjects() {
+        public void displayAllProjects(){
         System.out.println("All Food Items: ");
         for (int i = 0; i < projectList.size(); i++) {
             System.out.println(projectList.get(i));
         }        
-        
     }
+        
+        public void addTaskToProject(Project project, Task task) {
+            project.addTaskToProject(task);
+        }
+        
+        public Optional<Project> newProjectDialog(){   
+
+            // Create a dialog
+            Dialog<Project> dialog = new Dialog<>();
+            dialog.setTitle("New Project");
+            //dialog.setHeaderText("This is a sample dialog");
+            dialog.setContentText("Click OK to close the dialog");
+            ButtonType okButton = new ButtonType("Create", ButtonBar.ButtonData.OK_DONE);
+            dialog.getDialogPane().getButtonTypes().addAll(okButton, ButtonType.CANCEL);
+
+            TextField nameField = new TextField();
+            DatePicker dueDateField = new DatePicker(LocalDate.now());
+            TextField descriptionField = new TextField();
+            
+            nameField.setPromptText("Project Name");
+            descriptionField.setPromptText("Project Description");
+            
+
+            GridPane grid = new GridPane();
+            grid.add(new Label("Project Name: "), 0, 0);
+            grid.add(nameField, 1, 0);
+            grid.add(new Label("Due Date: "), 0, 1);
+            grid.add(dueDateField, 1, 1);
+            grid.add(new Label("Description: "), 0, 2);
+            grid.add(descriptionField, 1, 2);
+            grid.setStyle("-fx-background-color: beige; -fx-border-width: 2px; -fx-border-radius: 5px; -fx-padding: 10px;");
+                
+            dialog.getDialogPane().setContent(grid);
+            
+            dialog.setResultConverter(dialogButton -> {
+                if (dialogButton == okButton) {
+                    Project newProject = new Project();
+                    newProject.setProjectName(nameField.getText());
+                    newProject.setProjectDueDate(dueDateField.getValue().toString());
+                    newProject.setProjectDescription(descriptionField.getText());
+                    return newProject;
+                }
+                return null;
+            });
+        
+        
+            return dialog.showAndWait();
+        }
+        
+        public Optional<Project> editProjectDialog(Project existingProject){   
+
+            // Create a dialog
+            Dialog<Project> dialog = new Dialog<>();
+            dialog.setTitle("Edit Project");
+            //dialog.setHeaderText("This is a sample dialog");
+            dialog.setContentText("Click OK to close the dialog");
+            ButtonType saveButton = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+            dialog.getDialogPane().getButtonTypes().addAll(saveButton, ButtonType.CANCEL);
+
+            TextField nameField = new TextField(existingProject.getProjectName());
+            DatePicker dueDateField = new DatePicker(LocalDate.now());
+            TextField descriptionField = new TextField(existingProject.getProjectDescription());
+            
+            nameField.setPromptText("Project Name");
+            descriptionField.setPromptText("Project Description");
+            
+
+            GridPane grid = new GridPane();
+            grid.add(new Label("Project Name: "), 0, 0);
+            grid.add(nameField, 1, 0);
+            grid.add(new Label("Due Date: "), 0, 1);
+            grid.add(dueDateField, 1, 1);
+            grid.add(new Label("Description: "), 0, 2);
+            grid.add(descriptionField, 1, 2);
+            grid.setStyle("-fx-background-color: beige; -fx-border-width: 2px; -fx-border-radius: 5px; -fx-padding: 10px;");
+
+            dialog.getDialogPane().setContent(grid);
+
+            dialog.setResultConverter(button -> {
+                if (button == saveButton) {
+                    existingProject.setProjectName(nameField.getText());
+                    existingProject.setProjectDueDate(dueDateField.getValue().toString());
+                    existingProject.setProjectDescription(descriptionField.getText());
+                    return existingProject; // Return the *same* object with updated info
+                }
+                return null;
+            });
+        
+        
+            return dialog.showAndWait();
+        }
     
 } // end ProjectService
