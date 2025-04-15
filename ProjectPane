@@ -4,25 +4,17 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 public class ProjectPane extends GridPane {
     private Project project;
-    private TextField nameField;
-    private TextField dueDateField;
-    private TextField descriptionField;
     private Text nameLabel;
     private Text dueDateLabel;
     private Text descriptionLabel;
-    private Text accomplish;
     private CheckBox completedCheckBox;
-    private Button saveButton;
     private Button editButton;
     private VBox taskListContainer;
     private Button addTaskButton;
@@ -32,11 +24,10 @@ public class ProjectPane extends GridPane {
     public ProjectPane(Project project) {
         this.project = project;
         ProjectService projServ = new ProjectService();
-        TaskService taskServ = new TaskService();
         
         // Label for Project Name
         nameLabel = new Text("Project: " + project.getProjectName());
-        
+        nameLabel.setStyle("-fx-font-weight: bold;");
         
         // Label for Due Date
         dueDateLabel = new Text("Due Date: " + project.getProjectDueDate());
@@ -48,11 +39,6 @@ public class ProjectPane extends GridPane {
         // Checkbox for Completion
         completedCheckBox = new CheckBox();
         completedCheckBox.setSelected(project.isProjectCompleted());
-        
-        // Save Button to update Project details
-        saveButton = new Button("Save");
-        saveButton.setOnAction(e -> saveProjectDetails());
-        
         
         //---------------------------------------------------------------------------
         //Placing corresponding tasks within each project pane
@@ -67,24 +53,23 @@ public class ProjectPane extends GridPane {
             Optional<Task> result = taskService.newTaskDialog();
             result.ifPresent(newTask -> {
                 project.addTaskToProject(newTask);
-                refreshTaskList(); // Make sure this updates your task UI
+                refreshTaskList();
             });
         });
         
         removeProjectButton = new Button("Delete Project");
         removeProjectButton.setOnAction(e -> {
-        ProjectService projService = new ProjectService();
-        projServ.removeProject(project);
+            projServ.removeProject(project);
 
-    // Remove ProjectPane from parent container
-        if (this.getParent() instanceof HBox) {
-        HBox parent = (HBox) this.getParent();
-        parent.getChildren().remove(this);
-    }
+        // Remove ProjectPane from parent container
+            if (this.getParent() instanceof HBox) {
+            HBox parent = (HBox) this.getParent();
+            parent.getChildren().remove(this);
+            }
         });
         
         Label taskLabel = new Label("Tasks: ");
-        VBox taskSection = new VBox(5, taskLabel, taskListContainer, addTaskButton, removeProjectButton);
+        VBox taskSection = new VBox(10, taskLabel, taskListContainer, addTaskButton);
         taskSection.setPadding(new Insets(5));
         this.setStyle("-fx-border-color: gray; -fx-border-width: 2px; -fx-border-radius: 5px; -fx-padding: 10px;");
 
@@ -96,7 +81,6 @@ public class ProjectPane extends GridPane {
         editButton = new Button("Edit");
         editButton.setOnAction(e -> editProjectDetails());
 
-
         // Update Project when checkbox is clicked
         completedCheckBox.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
             descriptionLabel.setStrikethrough(isNowSelected);
@@ -104,11 +88,11 @@ public class ProjectPane extends GridPane {
             nameLabel.setStrikethrough(isNowSelected);
         });
 
-        HBox checkAndEdit = new HBox(editButton, completedCheckBox);
-        checkAndEdit.setSpacing(20);
+        HBox checkEditDelete = new HBox(editButton, completedCheckBox, removeProjectButton);
+        checkEditDelete.setSpacing(20);
         
         vb = new VBox(nameLabel, descriptionLabel, dueDateLabel,
-                editButton, taskSection);
+                checkEditDelete, taskSection);
         vb.setSpacing(5);
                 
         // Styling and Spacing
@@ -123,17 +107,6 @@ public class ProjectPane extends GridPane {
     public Project getProject() {
         return project;
     }
-    private void saveProjectDetails() {
-        project.setProjectName(nameField.getText());
-        project.setProjectDueDate(dueDateField.getText());
-        project.setProjectDescription(descriptionField.getText());
-        if (completedCheckBox.isSelected()) {
-            project.setProjectCompleted();
-        }
-        else {
-            project.setProjectStatus("Pending");
-        }
-    } // end saveProjectDetails
     
     private void editProjectDetails(){
         ProjectService man1 = new ProjectService();
@@ -156,28 +129,9 @@ public class ProjectPane extends GridPane {
 
         // Add tasks from project to the UI
         for (Task task : project.getTasks()) {
-            TaskPane taskPane = new TaskPane(task);  // Create TaskPane for each task
-            taskListContainer.getChildren().add(taskPane);  // Add to the task list container
+            TaskPane taskPane = new TaskPane(task, project, taskListContainer); 
+            taskListContainer.getChildren().add(taskPane);  
         }
     }
 
-}
-            // Update UI labels
-            nameLabel.setText("Project: " + project.getProjectName());
-            dueDateLabel.setText("Due Date: " + project.getProjectDueDate());
-            descriptionLabel.setText("Description: " + project.getProjectDescription());
-        });
-    }
-    
-    public void refreshTaskList() {
-        // Clear current task list in the UI
-        taskListContainer.getChildren().clear();
-
-        // Add tasks from project to the UI
-        for (Task task : project.getTasks()) {
-            TaskPane taskPane = new TaskPane(task, project, taskListContainer);
-            taskListContainer.getChildren().add(taskPane);  // Add to the task list container
-        }
-    }
-
-}
+} // end of ProjectPane Class
