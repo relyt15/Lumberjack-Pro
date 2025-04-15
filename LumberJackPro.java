@@ -1,6 +1,9 @@
 package com.mycompany.lumberjack_pro;
 
 //import java.util.Scanner;
+//import java.util.Scanner;
+//import java.util.Scanner;
+import java.util.Optional;
 import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
@@ -22,7 +25,7 @@ import javafx.scene.text.Font;
 public class LumberJackPro extends Application {
     private BorderPane windowContainer;
     private BorderPane greetContainer;
-    private HBox taskContainer;
+    //private HBox taskContainer;
     private HBox projectContainer;
     
     
@@ -30,22 +33,24 @@ public class LumberJackPro extends Application {
     public void start(Stage primaryStage) {
         windowContainer = new BorderPane();
         greetContainer = new BorderPane();
-        taskContainer = new HBox(10);  // Container to hold task panes
         projectContainer = new HBox(20); // Container to hold project panes   
-     
+        
         
         Font font = new Font(13); 
         Label greeting = new Label("LUMBERJACK PRO");
         greeting.setFont(new Font("Liberation Mono", 24));
         GridPane.setHalignment (greeting, HPos.LEFT);
        
-        
-        Button addTaskButton = new Button("+");
-        Button addProjectButton = new Button("Add New Project");
+        //------------------------------------------------------------------------------------------------
+        // initializing buttons and linking their event actions
+        //------------------------------------------------------------------------------------------------
+        Button addProjectButton = new Button("+ New Project");
 
-        addTaskButton.setOnAction(e -> addNewTask());  // Handle addTask button click
+        //addTaskButton.setOnAction(e -> addNewTask());  // Handle addTask button click
         addProjectButton.setOnAction (e -> addNewProject()); // handles addProject button click
-        
+        //------------------------------------------------------------------------------------------------
+        // setting up logo on main page
+        //------------------------------------------------------------------------------------------------
         Image tree2 = new Image(getClass().getResourceAsStream("/Illustration19.png"));
         ImageView treeImageView = new ImageView(tree2);
         
@@ -57,16 +62,20 @@ public class LumberJackPro extends Application {
         greetLayout.setAlignment(Pos.CENTER);
         greetLayout.setStyle("-fx-padding: 5 px;");
         
-        VBox taskLayout = new VBox(20, addTaskButton, taskContainer);  // Overall layout
+        //------------------------------------------------------------------------------------------------
+        // setting up the panes to go in the scene
+        //------------------------------------------------------------------------------------------------
         HBox projectLayout = new HBox(30, addProjectButton, projectContainer);
+        //GridPane layout2 = new GridPane();
         
-        ScrollPane scroll = new ScrollPane(); //Scrollbar made for Task Sections
-        scroll.setContent(taskLayout);
+//        layout2.add(addProjectButton, 0, 0);
+//        layout2.add(projectContainer, 0, 1);
+//        layout2.setHgap(30);
         
-        ScrollPane scroll2 = new ScrollPane(); //Scrollbar made for Project Section
+        //Scrollbar made for Project Section
+        ScrollPane scroll2 = new ScrollPane(); 
         scroll2.setContent(projectLayout);
         
-        windowContainer.setBottom(scroll); 
         windowContainer.setCenter(scroll2); 
         greetContainer.setTop(greetLayout);
         
@@ -77,7 +86,9 @@ public class LumberJackPro extends Application {
         wholeLayout.setAlignment(Pos.TOP_CENTER);
         wholeLayout.setStyle("-fx-background-color: beige; -fx-padding: 20px;");
         
-        
+        //-------------------------------------------------------------------------------------
+        // setting up scene
+        //-------------------------------------------------------------------------------------
         Scene scene = new Scene(wholeLayout, 1200, 600, Color.BEIGE);
         
         Image tree = new Image(getClass().getResourceAsStream("/LUMBER.png"));
@@ -88,22 +99,20 @@ public class LumberJackPro extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-
-    private void addNewTask() {
-        // Create new Task object (you can later gather this from user input)
-        Task newTask = new Task();
-        
-        // Create TaskPane and add to the layout
-        TaskPane taskPane = new TaskPane(newTask);
-        taskContainer.getChildren().add(taskPane);
-    }
     
     private void addNewProject() {
-        Project newProject = new Project();
+        // Prompt dialogue box first from project service
+        // information entered into dialogue box gets set to project info
+        // then the project pane accepts the info from the project into LABELS instead of textfields
+        ProjectService man1 = new ProjectService();
+        Optional<Project> result = man1.newProjectDialog();
+
+        result.ifPresent(project -> {
+            // This block only runs if the user clicked OK and a project was created
+            ProjectPane projectPane = new ProjectPane(project);
+            projectContainer.getChildren().add(projectPane);
+        });
         
-        //Create ProjectPane and adds to the layout
-        ProjectPane projectPane = new ProjectPane(newProject);
-        projectContainer.getChildren().add(projectPane);
     }
 
     public static void main(String[] args) {
