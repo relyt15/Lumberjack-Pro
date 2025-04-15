@@ -1,8 +1,3 @@
-package com.mycompany.lumberjack_pro;
-
-//import java.util.Scanner;
-//import java.util.Scanner;
-//import java.util.Scanner;
 import java.util.Optional;
 import javafx.application.Application;
 import javafx.geometry.HPos;
@@ -22,7 +17,7 @@ import javafx.stage.Stage;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
-public class LumberJackPro extends Application {
+public class LumberjackPro extends Application {
     private BorderPane windowContainer;
     private BorderPane greetContainer;
     //private HBox taskContainer;

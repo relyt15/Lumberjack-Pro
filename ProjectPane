@@ -1,6 +1,3 @@
-package com.mycompany.lumberjack_pro;
-
-
 import java.util.Optional;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -39,7 +36,6 @@ public class ProjectPane extends GridPane {
         
         // Label for Project Name
         nameLabel = new Text("Project: " + project.getProjectName());
-        nameLabel.setStyle("-fx-font-weight: bold;");
         
         
         // Label for Due Date
@@ -47,6 +43,7 @@ public class ProjectPane extends GridPane {
         
         // Label for Project Description
         descriptionLabel = new Text("Description: " + project.getProjectDescription());
+
 
         // Checkbox for Completion
         completedCheckBox = new CheckBox();
@@ -144,6 +141,25 @@ public class ProjectPane extends GridPane {
             // Update the local project reference
             project = updated;
 
+            // Update UI labels
+            nameLabel.setText("Project: " + project.getProjectName());
+            dueDateLabel.setText("Due Date: " + project.getProjectDueDate());
+            descriptionLabel.setText("Description: " + project.getProjectDescription());
+        });
+    }
+    
+    public void refreshTaskList() {
+        // Clear current task list in the UI
+        taskListContainer.getChildren().clear();
+
+        // Add tasks from project to the UI
+        for (Task task : project.getTasks()) {
+            TaskPane taskPane = new TaskPane(task);  // Create TaskPane for each task
+            taskListContainer.getChildren().add(taskPane);  // Add to the task list container
+        }
+    }
+
+}
             // Update UI labels
             nameLabel.setText("Project: " + project.getProjectName());
             dueDateLabel.setText("Due Date: " + project.getProjectDueDate());

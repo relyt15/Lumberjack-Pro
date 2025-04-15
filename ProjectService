@@ -1,5 +1,3 @@
-package com.mycompany.lumberjack_pro;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -73,10 +71,9 @@ public class ProjectService {
             grid.add(dueDateField, 1, 1);
             grid.add(new Label("Description: "), 0, 2);
             grid.add(descriptionField, 1, 2);
-            grid.setStyle("-fx-background-color: beige; -fx-border-width: 2px; -fx-border-radius: 5px; -fx-padding: 10px;");
-                
-            dialog.getDialogPane().setContent(grid);
             
+            grid.setStyle("-fx-background-color: beige; -fx-border-width: 2px; -fx-border-radius: 5px; -fx-padding: 10px;");
+            dialog.getDialogPane().setContent(grid);
             dialog.setResultConverter(dialogButton -> {
                 if (dialogButton == okButton) {
                     Project newProject = new Project();

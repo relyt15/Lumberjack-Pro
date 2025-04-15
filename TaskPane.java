@@ -1,5 +1,3 @@
-package com.mycompany.lumberjack_pro;
-
 import java.time.LocalDate;
 import java.util.Optional;
 import javafx.scene.control.CheckBox;
@@ -14,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.DatePicker;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
+
 
 public class TaskPane extends HBox {
     private Task task;
@@ -32,13 +31,14 @@ public class TaskPane extends HBox {
     public TaskPane(Task task, Project proj, VBox taskListContainer) {
         this.task = task;
         TaskService taskServ = new TaskService();
-        
+
+      
         this.setStyle("-fx-border-color: gray; -fx-border-width: 2px; -fx-border-radius: 5px; -fx-padding: 10px;");
         
         // Label for Task Name
         nameLabel = new Text("Task: " + task.getTaskName());
         nameLabel.setStyle("-fx-font-weight: bold;");
-        this.setAlignment(Pos.CENTER_LEFT); // Or CENTER if you want all content centered
+        this.setAlignment(Pos.CENTER_LEFT);
         
         
         //Label for Due Date
@@ -46,9 +46,10 @@ public class TaskPane extends HBox {
         
         // Label for task description
         descriptionLabel = new Text("Description: " + task.getTaskDescription());
+
         
 
-        // Checkbox for Strikthrough Completion
+        // Checkbox for Strikethrough Completion
         completedCheckBox = new CheckBox();
         completedCheckBox.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
             descriptionLabel.setStrikethrough(isNowSelected);
@@ -67,14 +68,14 @@ public class TaskPane extends HBox {
         editTaskButton = new Button("Edit");
         editTaskButton.setOnAction(e -> editTaskDetails());
 
+
 	undoTaskButton = new Button("Delete");        
         undoTaskButton.setOnAction(e -> {
         taskListContainer.getChildren().remove(this); // remove from UI
         proj.removeTaskFromProject(task); // remove from model
         taskServ.removeTask(task); // remove from persistent storage
     	});
-        
-       
+      
 
         // Styling and Spacing
         this.setSpacing(15);
