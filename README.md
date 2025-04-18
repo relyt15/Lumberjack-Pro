@@ -22,14 +22,14 @@ Neo - Designed the UI, added scroll panes, created the calendar due-date selecti
 
 Alex -Created the first iteration of the user-defined project and task information, helped create the completed task/project checkboxes.
 
-**User Manual:**
+### **User Manual:**
 To use the application, download all of the files into your IDE, 
 make sure the image files are located in their proper resource folder, and run the program. 
 The starting page of Lumberjack Pro will show a mostly blank project section aside from an "Add project" button. 
 Click this to add your first project, fill out the dialog box, then more options for editing, deleting, and adding tasks for your project will appear. 
 There is a powerpoint attached to the .ReadMe file showing how to use the application in its second half.
 
-**Implementation Manual:**
+### **Implementation Manual:**
 Our application used 7 classes in total:
 
 Task - Contains information about a user-added task such as name, description, due date, and completion status.
